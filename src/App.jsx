@@ -1,5 +1,5 @@
 import ScrollProgress from "./components/ScrollProgress";
-
+import Education from "./sections/Education";
 import CustomCursor from "./components/CustomCursor";
 import ParticlesBackground from "./components/ParticlesBackground";
 import AIAssistant from "./components/AIAssistant";
@@ -33,7 +33,7 @@ export default function App() {
 
       {/* Sections */}
       <Hero />
-
+      <Education />
       <About />
 
       <Skills />
