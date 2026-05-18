@@ -9,13 +9,22 @@ const projects = [
     image: "/projects/vetmeds.jpeg",
 
     description:
-      "AI-powered veterinary healthcare platform with symptom analysis, emergency support, and doctor discovery.",
+      "Developed an AI-powered veterinary healthcare platform featuring intelligent symptom analysis, pet profile management, emergency SOS support, appointment scheduling, vaccination tracking, and doctor discovery system.",
 
     technologies: [
       "React.js",
-      "Python",
       "Firebase",
+      "Python",
       "REST APIs",
+      "AI Integration",
+    ],
+
+    features: [
+      "AI Symptom Analysis",
+      "Emergency SOS System",
+      "Pet Health Records",
+      "Vaccination Tracking",
+      "Doctor Locator",
     ],
 
     type: "desktop",
@@ -29,13 +38,21 @@ const projects = [
     image: "/projects/meterride.jpeg",
 
     description:
-      "Ride-hailing mobile application with live GPS tracking and real-time pricing system.",
+      "Built a modern ride-hailing mobile application with real-time GPS tracking, live ride management, meter-based pricing system, and responsive mobile user experience.",
 
     technologies: [
       "React Native",
       "Firebase",
       "Google Maps API",
       "JavaScript",
+    ],
+
+    features: [
+      "Live GPS Tracking",
+      "Meter-Based Pricing",
+      "Real-Time Ride Updates",
+      "Modern Mobile UI",
+      "Firebase Backend",
     ],
 
     type: "mobile",
@@ -51,9 +68,17 @@ export default function Projects() {
 
       {/* Heading */}
       <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        initial={{
+          opacity: 0,
+          y: 60,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 1,
+        }}
         className="text-center mb-24"
       >
 
@@ -169,6 +194,32 @@ export default function Projects() {
                   </div>
 
                 ))}
+
+              </div>
+
+              {/* Features */}
+              <div className="mb-10">
+
+                <h4 className="text-xl font-bold text-white mb-5">
+                  Key Features
+                </h4>
+
+                <div className="flex flex-wrap gap-3">
+
+                  {project.features.map((feature, i) => (
+
+                    <div
+                      key={i}
+                      className="px-4 py-2 rounded-full bg-purple-500/10 border border-purple-400 text-purple-300 text-sm"
+                    >
+
+                      {feature}
+
+                    </div>
+
+                  ))}
+
+                </div>
 
               </div>
 

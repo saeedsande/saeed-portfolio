@@ -3,7 +3,7 @@ import Education from "./sections/Education";
 import CustomCursor from "./components/CustomCursor";
 import ParticlesBackground from "./components/ParticlesBackground";
 import AIAssistant from "./components/AIAssistant";
-
+import Experience from "./sections/Experience";
 import Navbar from "./components/Navbar";
 
 import Hero from "./sections/Hero";
@@ -34,6 +34,7 @@ export default function App() {
       {/* Sections */}
       <Hero />
       <Education />
+      <Experience />
       <About />
 
       <Skills />

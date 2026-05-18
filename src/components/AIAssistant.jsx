@@ -1,70 +1,111 @@
 import { useState } from "react";
-
-const responses = {
-  hello:
-    "Hello! I am Saeed's AI Assistant. Ask me about skills, projects, or experience.",
-
-  skills:
-    "Saeed specializes in React.js, React Native, JavaScript, Firebase, Python, and AI-powered systems.",
-
-  projects:
-    "Main projects include VETMEDS — an AI veterinary healthcare platform, and MeterRide — a ride-hailing mobile application.",
-
-  experience:
-    "Saeed worked as a developer at Keep Active Pro AI Solutions focusing on web and mobile application development.",
-
-  contact:
-    "You can contact Saeed at saeedsande5117@gmail.com",
-};
+import axios from "axios";
 
 export default function AIAssistant() {
 
   const [open, setOpen] = useState(false);
 
-  const [messages, setMessages] = useState([
+  const [message, setMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const [chat, setChat] = useState([
     {
-      sender: "bot",
-      text:
-        "Hello! Ask me about Saeed's skills, projects, or experience.",
+      role: "assistant",
+      text: "Hi! I'm Saeed's AI assistant. Ask me about his skills, projects, education, or experience.",
     },
   ]);
 
-  const [input, setInput] = useState("");
+  const sendMessage = async () => {
 
-  const handleSend = () => {
-
-    if (!input.trim()) return;
+    if (!message.trim()) return;
 
     const userMessage = {
-      sender: "user",
-      text: input,
+      role: "user",
+      text: message,
     };
 
-    const key =
-      input.toLowerCase();
+    setChat((prev) => [...prev, userMessage]);
 
-    const botReply = responses[key] ||
-      "I currently understand: hello, skills, projects, experience, contact.";
+    const userInput = message;
 
-    setMessages((prev) => [
-      ...prev,
-      userMessage,
-      {
-        sender: "bot",
-        text: botReply,
-      },
-    ]);
+    setMessage("");
 
-    setInput("");
+    setLoading(true);
+
+    try {
+
+      const response = await axios.post(
+
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text:
+                    `You are an AI assistant for Saeed Sande's portfolio website.
+
+                    INFORMATION ABOUT SAEED:
+
+                    - Final-year Computer Engineering student
+                    - Full Stack Developer
+                    - React.js Developer
+                    - React Native Developer
+                    - AI-focused developer
+                    - Skilled in Firebase, Node.js, MongoDB, Python, Three.js, Tailwind CSS, Framer Motion
+                    - Developed VETMEDS AI-powered veterinary healthcare platform
+                    - Developed MeterRide ride-hailing mobile application
+                    - Interested in futuristic UI/UX and scalable applications
+
+                    Answer professionally, clearly, and briefly.
+
+                    USER QUESTION:
+                    ${userInput}`
+                },
+              ],
+            },
+          ],
+        }
+
+      );
+
+      const aiText =
+        response.data.candidates[0].content.parts[0].text;
+
+      setChat((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: aiText,
+        },
+      ]);
+
+    } catch (error) {
+
+      setChat((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text:
+            "Unable to connect with AI right now.",
+        },
+      ]);
+
+    }
+
+    setLoading(false);
+
   };
 
   return (
     <>
 
-      {/* Floating Button */}
+      {/* Floating AI Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-8 right-8 z-[9999] w-16 h-16 rounded-full bg-cyan-500 neon-glow text-3xl"
+        className="fixed bottom-8 right-8 z-[9999] w-20 h-20 rounded-full bg-cyan-500 shadow-[0_0_40px_rgba(0,255,255,0.5)] text-4xl hover:scale-110 duration-300"
       >
 
         🤖
@@ -74,28 +115,36 @@ export default function AIAssistant() {
       {/* Chat Window */}
       {open && (
 
-        <div className="fixed bottom-28 right-8 z-[9999] w-[350px] h-[500px] rounded-[30px] border border-white/10 bg-[#0b1120]/90 backdrop-blur-xl overflow-hidden shadow-2xl">
+        <div className="fixed bottom-32 right-8 w-[360px] h-[520px] bg-[#0b1120] border border-cyan-400 rounded-[30px] p-5 z-[9999] backdrop-blur-xl flex flex-col shadow-[0_0_40px_rgba(0,255,255,0.2)]">
 
           {/* Header */}
-          <div className="px-6 py-5 border-b border-white/10 bg-cyan-500/10">
+          <div className="mb-4">
 
-            <h2 className="text-xl font-bold text-cyan-400">
+            <h2 className="text-2xl font-black text-cyan-400">
+
               AI Assistant
+
             </h2>
+
+            <p className="text-sm text-gray-400 mt-1">
+
+              Ask anything about Saeed
+
+            </p>
 
           </div>
 
           {/* Messages */}
-          <div className="h-[360px] overflow-y-auto p-5 space-y-4">
+          <div className="flex-1 overflow-y-auto space-y-4 pr-2">
 
-            {messages.map((msg, index) => (
+            {chat.map((msg, index) => (
 
               <div
                 key={index}
-                className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-6 ${
-                  msg.sender === "user"
-                    ? "ml-auto bg-cyan-500 text-black"
-                    : "bg-white/10 text-white"
+                className={`p-4 rounded-2xl text-sm leading-7 ${
+                  msg.role === "user"
+                    ? "bg-cyan-500 text-black ml-10"
+                    : "bg-white/10 text-white mr-10"
                 }`}
               >
 
@@ -105,24 +154,31 @@ export default function AIAssistant() {
 
             ))}
 
+            {loading && (
+
+              <div className="bg-white/10 text-white mr-10 p-4 rounded-2xl">
+
+                Thinking...
+
+              </div>
+
+            )}
+
           </div>
 
           {/* Input */}
-          <div className="absolute bottom-0 left-0 w-full p-4 border-t border-white/10 bg-[#0b1120] flex gap-3">
+          <div className="mt-4 flex gap-2">
 
             <input
-              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Ask something..."
-              value={input}
-              onChange={(e) =>
-                setInput(e.target.value)
-              }
-              className="flex-1 rounded-full bg-white/10 border border-white/10 px-4 py-3 outline-none"
+              className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 outline-none text-white"
             />
 
             <button
-              onClick={handleSend}
-              className="px-5 rounded-full bg-cyan-500 text-black font-semibold"
+              onClick={sendMessage}
+              className="px-5 rounded-xl bg-cyan-500 text-black font-bold hover:scale-105 duration-300"
             >
 
               Send
