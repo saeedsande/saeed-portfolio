@@ -102,10 +102,10 @@ npm start
 
 ## 📬 Contact
 
-📧 Email: your-email@example.com
+📧 Email: saeedsande5117@gmail.com.com
 
 💼 LinkedIn:
-Add your LinkedIn URL here
+ linkedin.com/in/sae-ed-sande2843a31a6
 
 🐙 GitHub:
 https://github.com/saeedsande
