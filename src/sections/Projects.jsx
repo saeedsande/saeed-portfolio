@@ -6,7 +6,7 @@ const projects = [
 
     subtitle: "AI-Powered Veterinary Care Platform",
 
-    image: "/projects/vetmeds.jpeg",
+    image: "/projects/vetmeds.png",
 
     description:
       "Developed an AI-powered veterinary healthcare platform featuring intelligent symptom analysis, pet profile management, emergency SOS support, appointment scheduling, vaccination tracking, and doctor discovery system.",
@@ -35,7 +35,7 @@ const projects = [
 
     subtitle: "Ride-Hailing Mobile Application",
 
-    image: "/projects/meterride.jpeg",
+    image: "/projects/meterride.png",
 
     description:
       "Built a modern ride-hailing mobile application with real-time GPS tracking, live ride management, meter-based pricing system, and responsive mobile user experience.",
